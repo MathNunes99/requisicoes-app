@@ -5,7 +5,7 @@ import { EquipamentoRoutingModule } from './equipamento-routing.module';
 import { EquipamentoComponent } from './equipamento.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxCurrencyModule } from 'ngx-currency';
+import { NgxMaskModule } from 'ngx-mask';
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     ReactiveFormsModule,
     EquipamentoRoutingModule,
     NgbModule,
-    NgxCurrencyModule,
+    NgxMaskModule.forChild()
   ]
 })
 export class EquipamentoModule { }

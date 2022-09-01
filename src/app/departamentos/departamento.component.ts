@@ -48,6 +48,8 @@ export class DepartamentoComponent implements OnInit {
   public async gravar(modal: TemplateRef<any>, departamento?: Departamento) {
     this.form.reset();
 
+    console.log(departamento);
+
     if (departamento)
       this.form.setValue(departamento);
 
@@ -59,7 +61,7 @@ export class DepartamentoComponent implements OnInit {
       else
         await this.departamentoService.editar(this.form.value);
 
-      console.log('O departamento foi salvo com sucesso');
+
     } catch (_error) {
 
     }

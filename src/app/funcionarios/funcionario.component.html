@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12 col-md-10 col-lg-9 mx-auto">
       <div class="text-center text-md-start">
-        <h1 class="fw-bold text-primary">Equipamentos</h1>
+        <h1 class="fw-bold text-primary">Funcionarios</h1>
       </div>
 
       <div class="d-grid d-md-block gap-2 mt-4">
@@ -17,24 +17,24 @@
         <table class="table table-light table-bordered table-hover">
           <thead class="thead-dark text-center">
             <tr>
-              <th>Nº de Série</th>
-              <th>Nome do Equipamento</th>
-              <th>Preço de Aquisição</th>
-              <th>Data de Fabricação</th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Função</th>
+              <th>Departamento</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody class="text-center">
-            <tr *ngFor="let equipamento of (equipamentos$ | async)">
-              <td>{{ equipamento.numeroSerie }}</td>
-              <td>{{ equipamento.nome }}</td>
-              <td>{{ equipamento.precoAquisicao }}</td>
-              <td>{{ equipamento.dataFabricacao | date:'dd/MM/yyyy'}}</td>
+            <tr *ngFor="let funcionario of (funcionarios$ | async)">
+              <td>{{ funcionario.nome }}</td>
+              <td>{{ funcionario.email }}</td>
+              <td>{{ funcionario.funcao }}</td>
+              <td>{{ funcionario.departamento?.nome }}</td>
               <td class="d-grid d-md-block">
-                <button (click)="gravar(modal, equipamento)" type="button" class="btn btn-primary me-0 me-md-1 mb-1 mb-md-auto">
+                <button (click)="gravar(modal, funcionario)" type="button" class="btn btn-primary me-0 me-md-1 mb-1 mb-md-auto">
                   <i class="pi pi-user-edit"></i>
                 </button>
-                <button (click)="excluir(equipamento)" type="button" class="btn btn-outline-danger">
+                <button (click)="excluir(funcionario)" type="button" class="btn btn-outline-danger">
                   <i class="pi pi-trash"></i>
                 </button>
               </td>
@@ -48,55 +48,51 @@
 
 <ng-template #modal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{ tituloModal }} de Equipamento</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{ tituloModal }} de Funcionarios</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('fechar')"></button>
   </div>
   <form [formGroup]="form" (ngSubmit)="modal.close('gravar')">
     <div class="modal-body">
 
       <div class="form-group mb-3">
-        <label for="nome" class="form-label">Numero de Série</label>
-        <input
-          formControlName="numeroSerie"
-          class="form-control"
-          type="text"
-          placeholder="Nº de Série">
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="nome" class="form-label">Nome do Equipamento</label>
+        <label for="nome" class="form-label">Nome</label>
         <input
           formControlName="nome"
           class="form-control"
           type="text"
-          placeholder="Nome do equipamento">
+          placeholder="Nome do funcionário">
       </div>
 
       <div class="form-group mb-3">
-        <label for="Preço de Aquisição" class="form-label">Preço de Aquisição</label>
+        <label for="email" class="form-label">Email</label>
         <input
-          formControlName="precoAquisicao"
+          formControlName="email"
+          class="form-control"
+          type="email"
+          placeholder="E-mail do funcionário">
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="funcao" class="form-label">Função</label>
+        <input
+          formControlName="funcao"
           class="form-control"
           type="text"
-          placeholder="R$ 0,00"
-
-          mask="separator.2"
-          prefix="R$ "
-          thousandSeparator=","
-          decimalMarker="."
-          >
+          placeholder="Função do funcionário">
       </div>
 
       <div class="form-group mb-3">
-        <label for="Preço de Aquisição" class="form-label">Data de Fabricação</label>
-        <input
-          formControlName="dataFabricacao"
-          class="form-control"
-          type="date"
-          placeholder="dd-mm-yyyy"
-          >
-
+        <label for="departamentoId" class="form-label">Departamento</label>
+        <ng-select formControlName="departamentoId" [clearable]="false" [searchable]="false">
+          <ng-option
+            *ngFor="let departamento of (departamentos$ | async)"
+            [value]="departamento.id">
+            {{ departamento.nome }}
+          </ng-option>
+        </ng-select>
       </div>
+
+
 
     </div>
     <div class="modal-footer">
