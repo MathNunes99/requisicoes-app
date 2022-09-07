@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { Departamento } from 'src/app/departamentos/models/departamento.model';
 import { Funcionario } from '../models/funcionarios.model';
 
@@ -26,18 +26,18 @@ export class FuncionarioService {
     this.registros.doc(res.id).set(registro);
   }
 
-  public async editar(registro: Funcionario): Promise<void>{
+  public async editar(registro: Funcionario): Promise<void> {
     return this.registros.doc(registro.id).set(registro);
   }
 
-  public excluir(registro: Funcionario){
+  public excluir(registro: Funcionario) {
     return this.registros.doc(registro.id).delete();
   }
 
   public selecionarTodos(): Observable<Funcionario[]> {
     return this.registros.valueChanges()
       .pipe(
-        map((funcionarios: Funcionario[]) =>{
+        map((funcionarios: Funcionario[]) => {
           funcionarios.forEach(funcionario => {
             this.firestore
               .collection<Departamento>("departamentos")
@@ -48,6 +48,15 @@ export class FuncionarioService {
 
           return funcionarios;
         })
+      );
+  }
+
+  public selecionarFuncionarioLogado(email: string) {
+    return this.firestore.collection<Funcionario>('funcionarios',
+      ref => ref.where('email', '==', email)).valueChanges()
+      .pipe(
+        take(1),
+        map(funcionarios => funcionarios[0])
       );
   }
 }

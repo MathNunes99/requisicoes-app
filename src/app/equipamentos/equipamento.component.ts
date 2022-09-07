@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -26,10 +26,10 @@ export class EquipamentoComponent implements OnInit {
 
     this.form = this.fb.group({
       id: new FormControl(""),
-      numeroSerie: new FormControl(""),
-      nome: new FormControl(""),
-      precoAquisicao: new FormControl(""),
-      dataFabricacao: new FormControl("")
+      numeroSerie: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      nome: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      precoAquisicao: new FormControl("", Validators.required),
+      dataFabricacao: new FormControl("", Validators.required)
     })
   }
 

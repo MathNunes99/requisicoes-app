@@ -54,29 +54,40 @@
   <form [formGroup]="form" (ngSubmit)="modal.close('gravar')">
     <div class="modal-body">
 
-      <div class="form-group mb-3">
-        <label for="nome" class="form-label">Numero de Série</label>
+      <div class="form-group mb-3 position-relative">
+        <label for="numeroSerie" class="form-label">Numero de Série</label>
         <input
           formControlName="numeroSerie"
           class="form-control"
+          [ngClass]="(numeroSerie?.touched && numeroSerie?.invalid) ? 'is-invalid' : ''"
           type="text"
           placeholder="Nº de Série">
+          <div class="invalid-tooltip" *ngIf="numeroSerie?.touched && numeroSerie?.invalid">
+            <span *ngIf="numeroSerie?.errors?.['required']">O Numero de série é obrigatório</span>
+            <span *ngIf="numeroSerie?.errors?.['minlenght']">mínimo 3 caracteres</span>
+          </div>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-3 position-relative">
         <label for="nome" class="form-label">Nome do Equipamento</label>
         <input
           formControlName="nome"
           class="form-control"
+          [ngClass]="(nome?.touched && nome?.invalid) ? 'is-invalid' : ''"
           type="text"
           placeholder="Nome do equipamento">
+          <div class="invalid-tooltip" *ngIf="nome?.touched && nome?.invalid">
+            <span *ngIf="nome?.errors?.['required']">O nome do Equipamento é obrigatório</span>
+            <span *ngIf="nome?.errors?.['minlenght']">mínimo 3 letras</span>
+          </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="Preço de Aquisição" class="form-label">Preço de Aquisição</label>
+      <div class="form-group mb-3 position-relative">
+        <label for="precoAquisicao" class="form-label">Preço de Aquisição</label>
         <input
           formControlName="precoAquisicao"
           class="form-control"
+          [ngClass]="(precoAquisicao?.touched && precoAquisicao?.invalid) ? 'is-invalid' : ''"
           type="text"
           placeholder="R$ 0,00"
 
@@ -84,25 +95,31 @@
           prefix="R$ "
           thousandSeparator=","
           decimalMarker="."
-          >
+        >
+        <div class="invalid-tooltip" *ngIf="precoAquisicao?.touched && precoAquisicao?.invalid">
+          <span *ngIf="precoAquisicao?.errors?.['required']">O preço de Aquisição é obrigatório</span>
+        </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="Preço de Aquisição" class="form-label">Data de Fabricação</label>
+      <div class="form-group mb-3 position-relative">
+        <label for="dataFabricacao" class="form-label">Data de Fabricação</label>
         <input
           formControlName="dataFabricacao"
           class="form-control"
+          [ngClass]="(dataFabricacao?.touched && dataFabricacao?.invalid) ? 'is-invalid' : ''"
           type="date"
           placeholder="dd-mm-yyyy"
-          >
-
+        >
+        <div class="invalid-tooltip" *ngIf="dataFabricacao?.touched && dataFabricacao?.invalid">
+          <span *ngIf="dataFabricacao?.errors?.['required']">A data de Fabricação é obrigatória</span>
+        </div>
       </div>
 
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-primary col-md-3" (click)="modal.dismiss('fechar')">
         Cancelar</button>
-      <button type="submit" class="btn btn-primary col-md-3">Gravar</button>
+      <button type="submit" class="btn btn-primary col-md-3" [disabled]="this.form.invalid">Gravar</button>
     </div>
   </form>
 </ng-template>
