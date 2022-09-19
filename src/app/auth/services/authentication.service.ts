@@ -13,10 +13,6 @@ export class AuthenticationService {
     this.usuarioLogado = auth.authState;
   }
 
-  public authUser(){
-    return this.usuarioLogado;
-  }
-
   public cadastrar(email: string, senha: string): Promise<firebase.auth.UserCredential>{
     return this.auth.createUserWithEmailAndPassword(email, senha);
   }
