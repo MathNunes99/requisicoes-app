@@ -8,6 +8,7 @@ import { Departamento } from 'src/app/departamentos/models/departamento.model';
 import { DepartamentoService } from 'src/app/departamentos/services/departamento.service';
 import { Equipamento } from 'src/app/equipamentos/models/equipamento.model';
 import { EquipamentoService } from 'src/app/equipamentos/services/equipamento.service';
+import { Funcionario } from 'src/app/funcionarios/models/funcionarios.model';
 import { FuncionarioService } from 'src/app/funcionarios/services/funcionario.service';
 import { Requisicao } from '../models/requisicoes.model';
 import { RequisicaoService } from '../services/requisicao.service';
@@ -23,7 +24,7 @@ export class RequisicoesFuncionarioComponent implements OnInit, OnDestroy {
   public departamentos$: Observable<Departamento[]>;
   private processoAutenticado$: Subscription;
 
-  public funcionarioLogadoId: string;
+  public funcionarioLogado: Funcionario;
   public form: FormGroup;
 
   constructor(
@@ -62,16 +63,15 @@ export class RequisicoesFuncionarioComponent implements OnInit, OnDestroy {
 
     this.departamentos$ = this.departamentoService.selecionarTodos();
     this.equipamentos$ = this.equipamentoService.selecionarTodos();
+    this.requisicoes$ = this.requisicaoService.selecionarTodos();
 
     this.processoAutenticado$ = this.authService.usuarioLogado.subscribe(usuario => {
       const email: string = usuario?.email!;
 
       this.funcionarioService.selecionarFuncionarioLogado(email)
-        .subscribe(funcionario => {
-          this.funcionarioLogadoId = funcionario.id;
-          this.requisicoes$ = this.requisicaoService
-            .selecionarRequisicaoFuncionarioAtual(this.funcionarioLogadoId);
-        });
+        .subscribe(funcionario => this.funcionarioLogado = funcionario);
+
+
     });
   }
   ngOnDestroy(): void {
@@ -162,7 +162,7 @@ export class RequisicoesFuncionarioComponent implements OnInit, OnDestroy {
     this.form.get("dataAbertura")?.setValue(new Date());
     this.form.get("ultimaAtualizacao")?.setValue(new Date());
     this.form.get("equipamentoId")?.setValue(null);
-    this.form.get("funcionarioId")?.setValue(this.funcionarioLogadoId);
+    this.form.get("funcionarioId")?.setValue(this.funcionarioLogado.id);
   }
 
 }
